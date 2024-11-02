@@ -18,13 +18,40 @@ to browse the changes between the tags.
 
 See docs/process.md for more on how version tagging works.
 
-3.1.69 (in development)
+3.1.71 (in development)
 -----------------------
+- LLVM's `-Wnontrivial-memaccess` warning has been updated to also warn about
+  passing non-trivially-copyable destination parameter to `memcpy`,
+  `memset` and similar functions for which it is a documented undefined
+  behavior (#22798). See https://github.com/llvm/llvm-project/pull/111434
+- The automatic fallback to `$HOME/.emscripten_cache` when the emscripten
+  directory is read-only was removed.  This automatic behaviour could cause
+  confusion.  Anyone who really wants to use `$HOME/.emscripten_cache` can
+  still do so either via an environment variable (`EMCC_CACHE`) or via a config
+  file setting `CACHE`.
+- The standalone `file_packager.py` tool now outputs modern JS (specifically it
+  includes nullish assignment).  If you use this output directly and you want
+  to support older browsers you may need to transpile it.  If you use
+  `file_packager` via emcc the output will be transpiled as part of the emcc
+  output. (#22805)
+
+3.1.70 - 10/25/24
+-----------------
+- Improvements to Audio Worklet support (#22731, #22681)
+- Small improvements to embind (#22734)
+  
+3.1.69 - 10/12/24
+-----------------
 - The usage of `EM_BOOL` in the emscripten API has been replaced with C/C++
   bool.  This change should not be observable since `EM_BOOL` has been
   equivalent to `bool` since #22157. (#22155)
 - Fix regression introduced in 3.1.67 (#22557) which broke webgpu / int64
   integration. (#22689)
+- SDL2 port updated from 2.28.4 to 2.30.8. (#22697)
+- embind no longer exports any library functions by default.  Previously we
+  would export getInheritedInstanceCount, getLiveInheritedInstances,
+  flushPendingDeletes and setDelayFunction.  If you need these library function
+  exprted they can be added to `EXPORTED_RUNTIME_METHODS`. (#22705)
 
 3.1.68 - 09/30/24
 -----------------

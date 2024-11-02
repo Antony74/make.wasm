@@ -5,8 +5,11 @@
 
 import os
 
-TAG = 'release-2.28.4'
-HASH = '8dd593fd7d8660efdeb53b7d1706f5743eb68491a29eb0cf0c028d8f8b8a7945c0dc5bf1117b5e4e871d7622be277c0838d08cc6eabdecb563000dfcc0c94639'
+# For now we pin to specific commit since we want to include
+# https://github.com/libsdl-org/SDL/pull/11127
+# Once the next version of SDL2 is tagged we can use that here instead.
+TAG = '3deb07ea395373204462130c1e062bc1f71fe060'
+HASH = '551082bffb28442ad20662c6963fb02701449d43e7da6aa68fbec922e47b060609e3cdf5f9e3bfde7458a92547e008f010af79ddadf448665e55ca8759cfbcdb'
 SUBDIR = 'SDL-' + TAG
 
 variants = {'sdl2-mt': {'PTHREADS': 1}}
@@ -39,6 +42,7 @@ def get(ports, settings, shared):
     events/SDL_scancode_tables.c events/SDL_mouse.c events/SDL_quit.c
     events/SDL_touch.c events/SDL_windowevents.c file/SDL_rwops.c haptic/SDL_haptic.c
     joystick/controller_type.c joystick/SDL_gamecontroller.c joystick/SDL_joystick.c
+    joystick/SDL_steam_virtual_gamepad.c
     power/SDL_power.c render/SDL_d3dmath.c render/SDL_render.c
     render/SDL_yuv_sw.c render/direct3d/SDL_render_d3d.c render/direct3d11/SDL_render_d3d11.c
     render/opengl/SDL_render_gl.c render/opengl/SDL_shaders_gl.c render/opengles/SDL_render_gles.c
@@ -58,7 +62,7 @@ def get(ports, settings, shared):
     video/emscripten/SDL_emscriptenframebuffer.c video/emscripten/SDL_emscriptenmouse.c
     video/emscripten/SDL_emscriptenopengles.c video/emscripten/SDL_emscriptenvideo.c
     audio/emscripten/SDL_emscriptenaudio.c video/dummy/SDL_nullevents.c
-    video/dummy/SDL_nullframebuffer.c video/dummy/SDL_nullvideo.c video/yuv2rgb/yuv_rgb.c
+    video/dummy/SDL_nullframebuffer.c video/dummy/SDL_nullvideo.c video/yuv2rgb/yuv_rgb_std.c
     audio/disk/SDL_diskaudio.c audio/dummy/SDL_dummyaudio.c loadso/dlopen/SDL_sysloadso.c
     power/emscripten/SDL_syspower.c joystick/emscripten/SDL_sysjoystick.c
     filesystem/emscripten/SDL_sysfilesystem.c timer/unix/SDL_systimer.c haptic/dummy/SDL_syshaptic.c

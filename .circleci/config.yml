@@ -787,7 +787,7 @@ jobs:
       EMTEST_SKIP_NODE_CANARY: "1"
       EMTEST_SKIP_WASM64: "1"
     steps:
-      - run: apt-get install -q -y ninja-build scons
+      - run: apt-get install -q -y ninja-build scons ccache
       - run-tests-linux:
           # some native-dependent tests fail because of the lack of native
           # headers on emsdk-bundled clang
@@ -814,7 +814,7 @@ jobs:
           # (This bot doesn't have node canary installed which is required to
           # run wasm64 output).
           test_targets: "browser64
-            skip:browser64.test_worker
+            skip:browser64.test_hello_world_worker*
             skip:browser64.test_2gb_fail
             skip:browser64.test_4gb_fail
             skip:browser64.test_4gb"

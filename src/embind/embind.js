@@ -59,16 +59,6 @@ var LibraryEmbind = {
   }`,
   $EmValOptionalType__deps: ['$EmValType'],
   $EmValOptionalType: '=Object.assign({optional: true}, EmValType);',
-  $init_embind__deps: [
-    '$getInheritedInstanceCount', '$getLiveInheritedInstances',
-    '$flushPendingDeletes', '$setDelayFunction'],
-  $init_embind__postset: 'init_embind();',
-  $init_embind: () => {
-    Module['getInheritedInstanceCount'] = getInheritedInstanceCount;
-    Module['getLiveInheritedInstances'] = getLiveInheritedInstances;
-    Module['flushPendingDeletes'] = flushPendingDeletes;
-    Module['setDelayFunction'] = setDelayFunction;
-  },
 
   $throwUnboundTypeError__deps: ['$registeredTypes', '$typeDependencies', '$UnboundTypeError', '$getTypeName'],
   $throwUnboundTypeError: (message, types) => {
@@ -134,17 +124,14 @@ var LibraryEmbind = {
       // We are exposing a function with the same name as an existing function. Create an overload table and a function selector
       // that routes between the two.
       ensureOverloadTable(Module, name, name);
-      if (Module.hasOwnProperty(numArguments)) {
+      if (Module[name].overloadTable.hasOwnProperty(numArguments)) {
         throwBindingError(`Cannot register multiple overloads of a function with the same number of arguments (${numArguments})!`);
       }
       // Add the new function into the overload table.
       Module[name].overloadTable[numArguments] = value;
-    }
-    else {
+    } else {
       Module[name] = value;
-      if (undefined !== numArguments) {
-        Module[name].numArguments = numArguments;
-      }
+      Module[name].argCount = numArguments;
     }
   },
 
@@ -157,8 +144,7 @@ var LibraryEmbind = {
     // If there's an overload table for this symbol, replace the symbol in the overload table instead.
     if (undefined !== Module[name].overloadTable && undefined !== numArguments) {
       Module[name].overloadTable[numArguments] = value;
-    }
-    else {
+    } else {
       Module[name] = value;
       Module[name].argCount = numArguments;
     }
@@ -219,7 +205,6 @@ var LibraryEmbind = {
   },
 
   // raw pointer -> instance
-  $registeredInstances__deps: ['$init_embind'],
   $registeredInstances: {},
 
   $getBasestPointer__deps: ['$throwBindingError'],
@@ -281,7 +266,7 @@ var LibraryEmbind = {
   $registerType__docs: '/** @param {Object=} options */',
   $registerType: function(rawType, registeredInstance, options = {}) {
 #if ASSERTIONS
-    if (!('argPackAdvance' in registeredInstance)) {
+    if (registeredInstance.argPackAdvance === undefined) {
       throw new TypeError('registerType registeredInstance requires argPackAdvance');
     }
 #endif
@@ -1582,6 +1567,8 @@ var LibraryEmbind = {
     '$releaseClassHandle',
     '$throwBindingError',
     '$detachFinalizer',
+    '$flushPendingDeletes',
+    '$delayFunction',
   ],
   $init_ClassHandle: () => {
     Object.assign(ClassHandle.prototype, {
@@ -2278,9 +2265,9 @@ var LibraryEmbind = {
   $char_9: '9'.charCodeAt(0),
   $makeLegalFunctionName__deps: ['$char_0', '$char_9'],
   $makeLegalFunctionName: (name) => {
-    if (undefined === name) {
-      return '_unknown';
-    }
+#if ASSERTIONS
+    assert(typeof name === 'string');
+#endif
     name = name.replace(/[^a-zA-Z0-9_]/g, '$');
     var f = name.charCodeAt(0);
     if (f >= char_0 && f <= char_9) {
