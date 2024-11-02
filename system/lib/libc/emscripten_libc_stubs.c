@@ -186,6 +186,7 @@ weak int posix_spawn(pid_t *pid, const char *path,
                        const posix_spawn_file_actions_t *file_actions,
                        const posix_spawnattr_t *attrp,
                        char *const argv[], char *const envp[]) {
+  printf("posix_spawn was called, but is stubbed to return an error\n");
   errno = ENOSYS;
   return -1;
 }
