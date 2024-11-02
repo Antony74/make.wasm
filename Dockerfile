@@ -1,5 +1,7 @@
+# syntax=docker.io/docker/dockerfile:1.7-labs
+
 # docker build -t akb74/emscripten .
-# docker run -it akb74/emscripten bash
+# docker run -it -v .:/git/host akb74/emscripten bash
 # emcc -O2 -s NODERAWFS=1 posix_spawn.c
 
 FROM ubuntu:jammy
@@ -43,14 +45,11 @@ ENV EM_CONFIG=/git/emsdk/.emscripten
 # Bootstrap emscripten
 
 WORKDIR /git/emscripten
-COPY . .
+COPY --exclude=make-play --exclude=docker-wasm-build . .
 RUN python3 bootstrap.py
 
-WORKDIR /git
-COPY cat.c .
-COPY getcwd.c .
-COPY hello.c .
-COPY posix_spawn.c .
+COPY make-play /git/make-play
 
+WORKDIR /git/make-play
 CMD ["bash"]
 
