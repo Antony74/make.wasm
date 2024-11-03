@@ -6,6 +6,11 @@
 
 FROM ubuntu:jammy
 
+ARG EMSDK_VER=3.1.69
+ARG NODE_VER=node-20.18.0-64bit
+ARG NODE_VER_UNDERSCORE=20.18.0_64bit
+ARG MAKE_VERSION=4.4.1
+
 RUN echo "## Start building" \
     && echo "## Update and install packages" \
     && apt-get -qq -y update \
@@ -13,10 +18,12 @@ RUN echo "## Start building" \
         binutils \
         build-essential \
         ca-certificates \
+        curl \
         file \
         git \
         python3 \
         python3-pip \
+        tar \
     && echo "## Done"
 
 WORKDIR /git
@@ -27,10 +34,6 @@ WORKDIR /git
 RUN git clone --depth 1 https://github.com/emscripten-core/emsdk.git
 
 WORKDIR /git/emsdk
-
-ARG EMSDK_VER=3.1.69
-ARG NODE_VER=node-20.18.0-64bit
-ARG NODE_VER_UNDERSCORE=20.18.0_64bit
 
 RUN ./emsdk install ${EMSDK_VER} ${NODE_VER}
 RUN ./emsdk activate ${EMSDK_VER} ${NODE_VER}
@@ -45,11 +48,48 @@ ENV EM_CONFIG=/git/emsdk/.emscripten
 # Bootstrap emscripten
 
 WORKDIR /git/emscripten
-COPY --exclude=make-play --exclude=docker-wasm-build . .
+COPY --exclude=make-play --exclude=docker-wasm-build --exclude=make.wasm . .
 RUN python3 bootstrap.py
+
+# Get GNU Make
+
+WORKDIR /git
+RUN curl https://ftp.gnu.org/gnu/make/make-${MAKE_VERSION}.tar.gz -o make-${MAKE_VERSION}.tar.gz --fail-with-body
+RUN tar -xvzf make-${MAKE_VERSION}.tar.gz
+RUN mv make-${MAKE_VERSION} make
+
+WORKDIR /git/make
+
+COPY docker-wasm-build/package.json .
+
+# Switch to the wasm build of make.  If you want to bootstrap from the regular binary build of make, comment from here
+
+# # Remove existing regular build of make
+# RUN which make | xargs -d '\n' rm -rf
+
+# COPY make.wasm .
+# COPY make.js .
+
+# RUN npm install --global .
+
+# If you want to bootstrap from the regular binary build of make, comment to here
+
+# Build GNU Make
+
+RUN emconfigure ./configure
+RUN emmake make
+RUN find . -name "*.o" -type f | xargs emcc -O2 -s NODERAWFS=1 -o make.js
+
+# Replace make.js
+COPY docker-wasm-build/make.js .
+
+WORKDIR /git
+
+COPY docker-wasm-build/clean-and-copy-to-host.sh .
+
+# make-play just some useful test code here
 
 COPY make-play /git/make-play
 
-WORKDIR /git/make-play
 CMD ["bash"]
 
