@@ -3,6 +3,7 @@
 # docker build -t akb74/emscripten .
 # docker run -it -v .:/git/host akb74/emscripten bash
 # emcc -O2 -s NODERAWFS=1 posix_spawn.c
+# node ../make/make.js
 
 FROM ubuntu:jammy
 
@@ -48,15 +49,18 @@ ENV EM_CONFIG=/git/emsdk/.emscripten
 # Bootstrap emscripten
 
 WORKDIR /git/emscripten
-COPY --exclude=make-play --exclude=docker-wasm-build --exclude=make.wasm . .
+COPY --exclude=Dockerfile --exclude=make-play --exclude=docker-wasm-build --exclude=make.wasm . .
 RUN python3 bootstrap.py
 
 # Get GNU Make
 
-WORKDIR /git
-RUN curl https://ftp.gnu.org/gnu/make/make-${MAKE_VERSION}.tar.gz -o make-${MAKE_VERSION}.tar.gz --fail-with-body
-RUN tar -xvzf make-${MAKE_VERSION}.tar.gz
-RUN mv make-${MAKE_VERSION} make
+# WORKDIR /git
+# RUN curl https://ftp.gnu.org/gnu/make/make-${MAKE_VERSION}.tar.gz -o make-${MAKE_VERSION}.tar.gz --fail-with-body
+# RUN tar -xvzf make-${MAKE_VERSION}.tar.gz
+# RUN mv make-${MAKE_VERSION} make
+
+# For diagnostic purposes only, get it locally instead
+COPY make.wasm /git/make
 
 WORKDIR /git/make
 
@@ -83,6 +87,10 @@ RUN find . -name "*.o" -type f | xargs emcc -O2 -s NODERAWFS=1 -o make.js
 # Replace make.js
 COPY docker-wasm-build/make.js .
 
+# Remove existing regular build of make
+RUN which make | xargs -d '\n' rm -rf
+RUN npm install --global .
+
 WORKDIR /git
 
 COPY docker-wasm-build/clean-and-copy-to-host.sh .
@@ -91,5 +99,6 @@ COPY docker-wasm-build/clean-and-copy-to-host.sh .
 
 COPY make-play /git/make-play
 
+WORKDIR /git/make-play
 CMD ["bash"]
 
