@@ -57,15 +57,15 @@ RUN python3 bootstrap.py
 
 # Get GNU Make
 
-WORKDIR /git
-RUN curl https://ftp.gnu.org/gnu/make/make-${MAKE_VERSION}.tar.gz -o make-${MAKE_VERSION}.tar.gz --fail-with-body
-RUN tar -xvzf make-${MAKE_VERSION}.tar.gz
-RUN mv make-${MAKE_VERSION} make
+# WORKDIR /git
+# RUN curl https://ftp.gnu.org/gnu/make/make-${MAKE_VERSION}.tar.gz -o make-${MAKE_VERSION}.tar.gz --fail-with-body
+# RUN tar -xvzf make-${MAKE_VERSION}.tar.gz
+# RUN mv make-${MAKE_VERSION} make
 
 # Alternatively we can use our own local copy of the GNU Make source code instead, which can be useful diagnostically
 # COPY make.wasm /git/make
 
-WORKDIR /git/make
+# WORKDIR /git/make
 
 COPY docker-wasm-build/package.json .
 

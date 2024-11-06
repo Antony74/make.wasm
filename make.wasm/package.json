@@ -1,0 +1,19 @@
+{
+    "name": "make.wasm",
+    "version": "1.0.0",
+    "description": "A wasm build of GNU Make integrated into the npm toolchain",
+    "bin": {
+        "make": "make.js",
+        "make.wasm": "make.wasm"
+    },
+    "author": "FSF",
+    "license": "GPL-3.0-only",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/Antony74/make.wasm.git"
+    },
+    "prettier": {
+        "tabWidth": 4,
+        "singleQuote": true
+    }
+}

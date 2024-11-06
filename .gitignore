@@ -34,5 +34,3 @@ coverage.xml
 # ...except the templates.
 !/tools/run_python.ps1
 !/tools/run_python_compiler.ps1
-
-make.wasm

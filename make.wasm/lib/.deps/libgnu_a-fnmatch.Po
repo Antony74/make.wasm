@@ -1,0 +1,56 @@
+libgnu_a-fnmatch.o: fnmatch.c ../src/config.h \
+  /git/emsdk/upstream/lib/clang/20/include/stdbool.h \
+  /git/emscripten/cache/sysroot/include/stdbool.h \
+  ../src/../src/mkcustom.h alloca.h \
+  /git/emsdk/upstream/lib/clang/20/include/stddef.h \
+  /git/emscripten/cache/sysroot/include/stddef.h \
+  /git/emsdk/upstream/lib/clang/20/include/__stddef_header_macro.h \
+  /git/emsdk/upstream/lib/clang/20/include/__stddef_ptrdiff_t.h \
+  /git/emsdk/upstream/lib/clang/20/include/__stddef_size_t.h \
+  /git/emsdk/upstream/lib/clang/20/include/__stddef_wchar_t.h \
+  /git/emsdk/upstream/lib/clang/20/include/__stddef_null.h \
+  /git/emsdk/upstream/lib/clang/20/include/__stddef_max_align_t.h \
+  /git/emsdk/upstream/lib/clang/20/include/__stddef_offsetof.h \
+  /git/emscripten/cache/sysroot/include/errno.h \
+  /git/emscripten/cache/sysroot/include/features.h \
+  /git/emscripten/cache/sysroot/include/bits/errno.h \
+  /git/emscripten/cache/sysroot/include/wasi/api.h \
+  /git/emsdk/upstream/lib/clang/20/include/stdint.h \
+  /git/emscripten/cache/sysroot/include/stdint.h \
+  /git/emscripten/cache/sysroot/include/bits/alltypes.h \
+  /git/emscripten/cache/sysroot/include/bits/stdint.h fnmatch.h \
+  /git/emscripten/cache/sysroot/include/ctype.h \
+  /git/emscripten/cache/sysroot/include/compat/string.h \
+  /git/emscripten/cache/sysroot/include/string.h \
+  /git/emscripten/cache/sysroot/include/strings.h \
+  /git/emscripten/cache/sysroot/include/compat/stdlib.h \
+  /git/emscripten/cache/sysroot/include/stdlib.h
+../src/config.h:
+/git/emsdk/upstream/lib/clang/20/include/stdbool.h:
+/git/emscripten/cache/sysroot/include/stdbool.h:
+../src/../src/mkcustom.h:
+alloca.h:
+/git/emsdk/upstream/lib/clang/20/include/stddef.h:
+/git/emscripten/cache/sysroot/include/stddef.h:
+/git/emsdk/upstream/lib/clang/20/include/__stddef_header_macro.h:
+/git/emsdk/upstream/lib/clang/20/include/__stddef_ptrdiff_t.h:
+/git/emsdk/upstream/lib/clang/20/include/__stddef_size_t.h:
+/git/emsdk/upstream/lib/clang/20/include/__stddef_wchar_t.h:
+/git/emsdk/upstream/lib/clang/20/include/__stddef_null.h:
+/git/emsdk/upstream/lib/clang/20/include/__stddef_max_align_t.h:
+/git/emsdk/upstream/lib/clang/20/include/__stddef_offsetof.h:
+/git/emscripten/cache/sysroot/include/errno.h:
+/git/emscripten/cache/sysroot/include/features.h:
+/git/emscripten/cache/sysroot/include/bits/errno.h:
+/git/emscripten/cache/sysroot/include/wasi/api.h:
+/git/emsdk/upstream/lib/clang/20/include/stdint.h:
+/git/emscripten/cache/sysroot/include/stdint.h:
+/git/emscripten/cache/sysroot/include/bits/alltypes.h:
+/git/emscripten/cache/sysroot/include/bits/stdint.h:
+fnmatch.h:
+/git/emscripten/cache/sysroot/include/ctype.h:
+/git/emscripten/cache/sysroot/include/compat/string.h:
+/git/emscripten/cache/sysroot/include/string.h:
+/git/emscripten/cache/sysroot/include/strings.h:
+/git/emscripten/cache/sysroot/include/compat/stdlib.h:
+/git/emscripten/cache/sysroot/include/stdlib.h:
