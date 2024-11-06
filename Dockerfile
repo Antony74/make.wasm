@@ -63,9 +63,9 @@ RUN python3 bootstrap.py
 # RUN mv make-${MAKE_VERSION} make
 
 # Alternatively we can use our own local copy of the GNU Make source code instead, which can be useful diagnostically
-# COPY make.wasm /git/make
+COPY make.wasm /git/make
 
-# WORKDIR /git/make
+WORKDIR /git/make
 
 COPY docker-wasm-build/package.json .
 
