@@ -30,8 +30,8 @@ void run_cmd(char *cmd)
     }
 }
 
-void main(int argc, char* argv[])
+int main(int argc, char* argv[])
 {
     run_cmd(argv[1]);
-    return;
+    return 0;
 }
