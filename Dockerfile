@@ -1,9 +1,12 @@
 # syntax=docker.io/docker/dockerfile:1.7-labs
 
-# docker build -t akb74/emscripten .
-# docker run -it -v .:/git/host akb74/emscripten bash
-# emcc -O2 -s NODERAWFS=1 posix_spawn.c
-# node ../make/make.js
+# Usage:
+#   docker build -t akb74/emscripten .
+#   docker run -it -v .:/git/host akb74/emscripten
+#
+# Other commands I find useful:
+#   docker run -it -v .:/git/host akb74/emscripten bash
+#   emcc -O2 -s NODERAWFS=1 posix_spawn.c
 
 FROM ubuntu:jammy
 
@@ -54,13 +57,13 @@ RUN python3 bootstrap.py
 
 # Get GNU Make
 
-# WORKDIR /git
-# RUN curl https://ftp.gnu.org/gnu/make/make-${MAKE_VERSION}.tar.gz -o make-${MAKE_VERSION}.tar.gz --fail-with-body
-# RUN tar -xvzf make-${MAKE_VERSION}.tar.gz
-# RUN mv make-${MAKE_VERSION} make
+WORKDIR /git
+RUN curl https://ftp.gnu.org/gnu/make/make-${MAKE_VERSION}.tar.gz -o make-${MAKE_VERSION}.tar.gz --fail-with-body
+RUN tar -xvzf make-${MAKE_VERSION}.tar.gz
+RUN mv make-${MAKE_VERSION} make
 
-# For diagnostic purposes only, get it locally instead
-COPY make.wasm /git/make
+# For diagnostic purposes only, we can get it locally instead
+# COPY make.wasm /git/make
 
 WORKDIR /git/make
 
@@ -100,5 +103,5 @@ COPY docker-wasm-build/clean-and-copy-to-host.sh .
 COPY make-play /git/make-play
 
 WORKDIR /git/make-play
-CMD ["bash"]
+CMD ["make"]
 
