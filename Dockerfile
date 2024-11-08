@@ -86,9 +86,7 @@ COPY docker-wasm-build/package.json .
 RUN CFLAGS="-DUSE_POSIX_SPAWN" emconfigure ./configure
 RUN emmake make
 RUN find . -name "*.o" -type f | xargs emcc -O2 -s NODERAWFS=1 -o make.js
-
-# Replace make.js
-COPY docker-wasm-build/make.js .
+RUN sed -i '1s/^/#!\/usr\/bin\/env node\n/' make.js
 
 # Remove existing regular build of make
 RUN which make | xargs -d '\n' rm -rf
