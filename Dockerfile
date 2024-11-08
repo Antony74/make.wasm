@@ -83,7 +83,7 @@ COPY docker-wasm-build/package.json .
 
 # Build GNU Make
 
-RUN emconfigure ./configure
+RUN CFLAGS="-DUSE_POSIX_SPAWN" emconfigure ./configure
 RUN emmake make
 RUN find . -name "*.o" -type f | xargs emcc -O2 -s NODERAWFS=1 -o make.js
 
